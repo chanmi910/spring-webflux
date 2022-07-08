@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<script type="text/javascript">
+    //var evtSource = new EventSource('//localhost:8080/customer/sse');
+    var evtSource = new EventSource('/api/users/stream');
+    var evtSource2 = new EventSource('/api/users/sink');
+
+    evtSource.onmessage = function(e) {
+        var eventList = document.querySelector('#select');
+        var newElement = document.createElement("li");
+
+        var data = JSON.parse(e.data);
+        newElement.textContent = data.name;
+        eventList.appendChild(newElement);
+    }
+
+    evtSource2.onmessage = function(e) {
+        var eventList = document.querySelector('#new');
+        var newElement = document.createElement("tr");
+
+        var data = JSON.parse(e.data);
+        newElement.textContent = data.name;
+        eventList.appendChild(newElement);
+    }
+</script>
+<body>
+    <h1 th:text="${data}"></h1>
+    <div style="background-color: cornflowerblue">
+        <h3>new data!</h3>
+        <ul id="new"></ul>
+    </div>
+    <ul id="select">
+        <li th:each="user : ${userList}">
+            <span th:text="${user.name}"></span> -
+            <span th:text="${user.department}"></span>
+        </li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,6 @@
+rootProject.name = 'webflux'
+include 'reactive-test'
+include 'fluxtest'
+include 'fluxdemo'
+include 'spring-webflux-demo'
+

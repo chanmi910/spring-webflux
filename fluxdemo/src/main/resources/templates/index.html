@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<script type="text/javascript">
+    //var evtSource = new EventSource('//localhost:8080/customer/sse');
+    var evtSource = new EventSource('/customer/sse');
+
+    evtSource.onmessage = function(e) {
+        var eventList = document.querySelector('ul');
+        var newElement = document.createElement("li");
+
+        var data = JSON.parse(e.data);
+        newElement.textContent = data.firstName;
+        eventList.appendChild(newElement);
+    }
+</script>
+<body>
+    <h1 th:text="${data}"></h1>
+    <h3>
+        <span>총 인원: </span>
+        <span id="cnt"></span>
+    </h3>
+    <ul>
+        <li th:each="user : ${userList}">
+            <span th:text="${user.firstName}"></span>
+        </li>
+    </ul>
+</body>
+</html>
